@@ -1,8 +1,36 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.support.matgo.restaurantInfo.mapper.StoreMapper">
-    <select id="findStoreList" resultType="storeInfoDTO">
-        SELECT *
+
+    <select id="randomStoreList" parameterType="map" resultType="com.support.matgo.restaurantInfo.dto.response.SimpleInfoResponse">
+        <!-- 하버사인 공식(지구의 곡률을 고려하여 위도와 경도로 두 점 사이 거리 계산) -->
+        SELECT *,
+        (6371 * acos(
+        cos(radians(#{coord.latitude})) * cos(radians(latitude)) *
+        cos(radians(longitude) - radians(#{coord.longitude})) +
+        sin(radians(#{coord.latitude})) * sin(radians(latitude))
+        )) AS distance
         FROM store_information
+        HAVING distance &lt; #{radius} / 1000
+        ORDER BY distance;
     </select>
+
+    <select id="findStoreList" resultType="com.support.matgo.restaurantInfo.dto.response.SimpleInfoResponse">
+        SELECT *,
+               (6371 * acos(
+                       cos(radians(#{filter.latitude})) * cos(radians(latitude)) *
+                       cos(radians(longitude) - radians(#{filter.longitude})) +
+                       sin(radians(#{filter.latitude})) * sin(radians(latitude))
+                       )) AS distance
+        FROM store_information
+        WHERE FIND_IN_SET(#{filter.memberType}, category) > 0
+        AND FIND_IN_SET(#{filter.foodType}, category)
+        HAVING distance &lt; #{radius} / 1000
+        ORDER BY distance;
+    </select>
+<!--    <select id="findStoreList" resultType="String">-->
+<!--        SELECT address-->
+<!--        FROM store_information-->
+<!--        WHERE store_nm = #{storeName}-->
+<!--    </select>-->
 </mapper>
