@@ -1,4 +1,4 @@
-package com.support.matgo.restaurantInfo.dto.response;
+package com.support.matgo.store.dto.response;
 
 import lombok.Data;
 import org.apache.ibatis.type.Alias;

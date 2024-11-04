@@ -1,8 +1,8 @@
-package com.support.matgo.restaurantInfo.mapper;
+package com.support.matgo.store.mapper;
 
-import com.support.matgo.restaurantInfo.dto.request.CoordinateRequest;
-import com.support.matgo.restaurantInfo.dto.request.SearchTypeRequest;
-import com.support.matgo.restaurantInfo.dto.response.SimpleInfoResponse;
+import com.support.matgo.store.dto.request.CoordinateRequest;
+import com.support.matgo.store.dto.request.SearchTypeRequest;
+import com.support.matgo.store.dto.response.SimpleInfoResponse;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
 

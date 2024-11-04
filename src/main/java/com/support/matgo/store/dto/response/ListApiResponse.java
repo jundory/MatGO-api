@@ -1,4 +1,4 @@
-package com.support.matgo.restaurantInfo.dto.response;
+package com.support.matgo.store.dto.response;
 
 import lombok.Builder;
 import lombok.Data;
@@ -11,4 +11,5 @@ public class ListApiResponse {
   private String message;
   private List<SimpleInfoResponse> listData;
 //  private Boolean status
+//  statusCode,
 }

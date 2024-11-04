@@ -1,16 +1,18 @@
-package com.support.matgo.restaurantInfo.controller;
+package com.support.matgo.store.controller;
 
-import com.support.matgo.restaurantInfo.dto.request.CoordinateRequest;
-import com.support.matgo.restaurantInfo.dto.request.SearchTypeRequest;
-import com.support.matgo.restaurantInfo.service.StoreService;
+import com.support.matgo.store.dto.request.CoordinateRequest;
+import com.support.matgo.store.dto.request.SearchTypeRequest;
+import com.support.matgo.store.service.StoreService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 @RequiredArgsConstructor
 @RestController
+@RequestMapping("/api/store")
 public class StoreController {
   private final StoreService storeService;
 
@@ -25,6 +27,6 @@ public class StoreController {
 
   @PostMapping("/getSearchList")
   public ResponseEntity<?> searchStoreList(@RequestBody SearchTypeRequest param) {
-    return storeService.findRestaurantList(param);
+    return storeService.findFeedList(param);
   }
 }

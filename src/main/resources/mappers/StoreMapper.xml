@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper namespace="com.support.matgo.restaurantInfo.mapper.StoreMapper">
+<mapper namespace="com.support.matgo.store.mapper.StoreMapper">
 
-    <select id="randomStoreList" parameterType="map" resultType="com.support.matgo.restaurantInfo.dto.response.SimpleInfoResponse">
+    <select id="randomStoreList" parameterType="map" resultType="com.support.matgo.store.dto.response.SimpleInfoResponse">
         <!-- 하버사인 공식(지구의 곡률을 고려하여 위도와 경도로 두 점 사이 거리 계산) -->
         SELECT *,
         (6371 * acos(
@@ -15,7 +15,7 @@
         ORDER BY distance;
     </select>
 
-    <select id="findStoreList" resultType="com.support.matgo.restaurantInfo.dto.response.SimpleInfoResponse">
+    <select id="findStoreList" resultType="com.support.matgo.store.dto.response.SimpleInfoResponse">
         SELECT *,
                (6371 * acos(
                        cos(radians(#{filter.latitude})) * cos(radians(latitude)) *

@@ -1,4 +1,4 @@
-package com.support.matgo.restaurantInfo.dto.request;
+package com.support.matgo.store.dto.request;
 
 import lombok.Data;
 

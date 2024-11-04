@@ -1,10 +1,10 @@
-package com.support.matgo.restaurantInfo.service;
+package com.support.matgo.store.service;
 
-import com.support.matgo.restaurantInfo.dto.request.CoordinateRequest;
-import com.support.matgo.restaurantInfo.dto.response.ListApiResponse;
-import com.support.matgo.restaurantInfo.dto.response.SimpleInfoResponse;
-import com.support.matgo.restaurantInfo.dto.request.SearchTypeRequest;
-import com.support.matgo.restaurantInfo.mapper.StoreMapper;
+import com.support.matgo.store.dto.request.CoordinateRequest;
+import com.support.matgo.store.dto.response.ListApiResponse;
+import com.support.matgo.store.dto.response.SimpleInfoResponse;
+import com.support.matgo.store.dto.request.SearchTypeRequest;
+import com.support.matgo.store.mapper.StoreMapper;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
@@ -38,7 +38,7 @@ public class StoreService {
   }
 
   // 검색 피드 리스트
-  public ResponseEntity<ListApiResponse> findRestaurantList(SearchTypeRequest param){
+  public ResponseEntity<ListApiResponse> findFeedList(SearchTypeRequest param){
     try {
       List<SimpleInfoResponse> findStoreList = storeMapper.findStoreList(param, RADIUS);
       ListApiResponse result = ListApiResponse.builder()
