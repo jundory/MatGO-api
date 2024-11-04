@@ -8,8 +8,7 @@ import java.util.List;
 @Builder
 @Data
 public class ListApiResponse {
+  private int status;
   private String message;
   private List<SimpleInfoResponse> listData;
-//  private Boolean status
-//  statusCode,
 }

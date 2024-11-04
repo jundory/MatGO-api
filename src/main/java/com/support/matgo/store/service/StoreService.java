@@ -24,6 +24,7 @@ public class StoreService {
       // 거리 검색 api
       List<SimpleInfoResponse> mainFeedList = storeMapper.randomStoreList(param, RADIUS);
       ListApiResponse result = ListApiResponse.builder()
+          .status(HttpStatus.OK.value())
           .message("success")
           .listData(mainFeedList)
           .build();
@@ -42,6 +43,7 @@ public class StoreService {
     try {
       List<SimpleInfoResponse> findStoreList = storeMapper.findStoreList(param, RADIUS);
       ListApiResponse result = ListApiResponse.builder()
+          .status(HttpStatus.OK.value())
           .message("success")
           .listData(findStoreList)
           .build();

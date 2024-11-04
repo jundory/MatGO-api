@@ -23,8 +23,8 @@
                        sin(radians(#{filter.latitude})) * sin(radians(latitude))
                        )) AS distance
         FROM store_information
-        WHERE FIND_IN_SET(#{filter.memberType}, category) > 0
-        AND FIND_IN_SET(#{filter.foodType}, category)
+        WHERE (FIND_IN_SET(#{filter.memberType}, category) > 0 OR #{filter.memberType} IS NULL)
+        AND (FIND_IN_SET(#{filter.foodType}, category) OR #{filter.foodType} IS NULL)
         HAVING distance &lt; #{radius} / 1000
         ORDER BY distance;
     </select>
