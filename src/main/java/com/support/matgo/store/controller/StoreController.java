@@ -5,10 +5,7 @@ import com.support.matgo.store.dto.request.SearchTypeRequest;
 import com.support.matgo.store.service.StoreService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 @RequiredArgsConstructor
 @RestController
@@ -28,5 +25,10 @@ public class StoreController {
   @PostMapping("/getSearchList")
   public ResponseEntity<?> searchStoreList(@RequestBody SearchTypeRequest param) {
     return storeService.findFeedList(param);
+  }
+
+  @GetMapping("/getDetailInfo/{storeId}")  //POST으로?
+  public ResponseEntity<?> detailStoreInfo(@PathVariable String storeId){
+    return storeService.getStoreInfo(storeId);
   }
 }
