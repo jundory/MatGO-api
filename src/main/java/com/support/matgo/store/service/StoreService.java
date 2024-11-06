@@ -26,11 +26,11 @@ public class StoreService {
   public ResponseEntity<ListApiResponse> mainFeedList(CoordinateRequest param){
     try {
       // 거리 검색 api
-      List<SimpleInfoResponse> mainFeedList = storeMapper.randomStoreList(param, RADIUS);
+      List<SimpleInfoResponse> storeList = storeMapper.mainFeedStoreList(param, RADIUS);
       ListApiResponse result = ListApiResponse.builder()
           .status(HttpStatus.OK.value())
           .message("success")
-          .listData(mainFeedList)
+          .listData(storeList)
           .build();
 //      if(mainFeedList.size() == 0){
 //        result.setMessage("");
@@ -45,11 +45,11 @@ public class StoreService {
   // 검색 피드 리스트
   public ResponseEntity<ListApiResponse> findFeedList(SearchTypeRequest param){
     try {
-      List<SimpleInfoResponse> findStoreList = storeMapper.findStoreList(param, RADIUS);
+      List<SimpleInfoResponse> storeList = storeMapper.findStoreList(param, RADIUS);
       ListApiResponse result = ListApiResponse.builder()
           .status(HttpStatus.OK.value())
           .message("success")
-          .listData(findStoreList)
+          .listData(storeList)
           .build();
       return ResponseEntity.ok(result);
     }
@@ -58,19 +58,20 @@ public class StoreService {
     }
   }
 
-  public ResponseEntity<?> getStoreInfo(String storeId){
+  public ResponseEntity<?> getStoreInfo(String id){
     // 검색리스트 비즈니스 로직
-    // 1. redis data check
+    // 1. redis에 storeId 조회
 
-    // 2. RDB 정보 조회
-
-    // 3. mongoDB에서 타입에 따른 메타 데이터 조회
-    List<DetailStore> findStoreInfo = detailStoreRepository.findDetailInfoByStoreId(storeId);
+    // 2. mongoDB img 메타 데이터 조회
+    int storeId = Integer.parseInt(id); //추후 python에서 int로 수정 필요
+    List<DetailStore> findStoreInfo = detailStoreRepository.findDetailInfoByStoreId(id);
     List<String> imgList = findStoreInfo.stream() //람다와 병렬처리 방식을 통해 리스트, 컬렉션을 함수형으로 쉽게 처리
         .map(DetailStore::getImgUrl)  //메서드 참조 람다식 "(x) -> DetailStore.getImgUrl(x)" 와 동일
         .toList();
-
+    // 3. RDB 간단 정보 조회
+    SimpleInfoResponse simpleStoreData = storeMapper.findSimpleStoreInfo(storeId);
     DetailInfoResponse result = DetailInfoResponse.builder()
+        .simpleInfo(simpleStoreData)
         .imgList(imgList)
         .build();
     // 4. redis에 저장

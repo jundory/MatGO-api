@@ -8,6 +8,6 @@ import java.util.List;
 @Getter
 @Builder
 public class DetailInfoResponse {
-  private SimpleInfoResponse simpleData;
+  private SimpleInfoResponse simpleInfo;
   List<String> imgList;
 }

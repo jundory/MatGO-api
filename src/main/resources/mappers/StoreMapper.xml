@@ -28,9 +28,9 @@
         HAVING distance &lt; #{radius} / 1000
         ORDER BY distance;
     </select>
-<!--    <select id="findStoreList" resultType="String">-->
-<!--        SELECT address-->
-<!--        FROM store_information-->
-<!--        WHERE store_nm = #{storeName}-->
-<!--    </select>-->
+    <select id="findSimpleStoreInfo" resultType="com.support.matgo.store.dto.response.SimpleInfoResponse">
+        SELECT *
+        FROM store_information
+        WHERE store_id = #{storeId}
+    </select>
 </mapper>

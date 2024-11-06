@@ -17,7 +17,7 @@ public class DetailStore {
   @Field("detail_addr")
   private String detailAddr;
   @Field("store_id")
-  private String storeId;
+  private int storeId;
   @Field("current_status")
   private String currentStatus;
   @Field("strt_time")

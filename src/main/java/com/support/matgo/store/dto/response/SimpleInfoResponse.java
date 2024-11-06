@@ -4,7 +4,6 @@ import lombok.Data;
 import org.apache.ibatis.type.Alias;
 
 @Data
-@Alias("simpleInfoDTO")
 public class SimpleInfoResponse {
   private String imgUrl;
   private int storeId;
