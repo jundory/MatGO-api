@@ -9,6 +9,7 @@ import java.math.BigDecimal;
 
 @Data
 public class SearchTypeRequest {
+  @NotNull
   private BigDecimal latitude;
   private BigDecimal longitude;
   private String memberType;
