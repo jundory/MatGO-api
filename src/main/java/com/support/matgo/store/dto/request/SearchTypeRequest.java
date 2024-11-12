@@ -8,10 +8,7 @@ import lombok.Data;
 import java.math.BigDecimal;
 
 @Data
-public class SearchTypeRequest {
-  @NotNull
-  private BigDecimal latitude;
-  private BigDecimal longitude;
+public class SearchTypeRequest extends CoordinateRequest{
   private String memberType;
   private String foodType;
 }

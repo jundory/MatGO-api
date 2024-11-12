@@ -2,6 +2,7 @@ package com.support.matgo.store.controller;
 
 import com.support.matgo.store.dto.request.CoordinateRequest;
 import com.support.matgo.store.dto.request.SearchTypeRequest;
+import com.support.matgo.store.dto.response.DetailApiResponse;
 import com.support.matgo.store.dto.response.ListApiResponse;
 import com.support.matgo.store.service.StoreService;
 import jakarta.validation.Valid;
@@ -24,12 +25,14 @@ public class StoreController {
   }
 
   @PostMapping("/getSearchList")
-  public ResponseEntity<?> searchStoreList(@RequestBody SearchTypeRequest param) {
-    return storeService.findFeedList(param);
+  public ResponseEntity<ListApiResponse> searchStoreList(@Valid @RequestBody SearchTypeRequest param) {
+    ListApiResponse result = storeService.findFeedList(param);
+    return ResponseEntity.ok(result);
   }
 
   @GetMapping("/getDetailInfo/{storeId}")  //POST으로?
-  public ResponseEntity<?> detailStoreInfo(@PathVariable String storeId){
-    return storeService.getStoreInfo(storeId);
+  public ResponseEntity<DetailApiResponse> detailStoreInfo(@PathVariable String storeId){
+    DetailApiResponse result = storeService.getStoreInfo(storeId);
+    return ResponseEntity.ok(result);
   }
 }

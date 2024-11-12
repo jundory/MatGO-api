@@ -12,8 +12,8 @@ import java.util.List;
 @Service
 public class CommonService {
   private final CommonMapper commonMapper;
-  public ResponseEntity<?> findCodeTypeList(String type){
+  public List<CodeTypeResponse> findCodeTypeList(String type){
     List<CodeTypeResponse> codeList = commonMapper.findCodeTypeList(type);
-    return ResponseEntity.ok(codeList);
+    return codeList;
   }
 }

@@ -23,10 +23,10 @@ public class GlobalExceptionHandler {
 
   // Custom Exception global handling
   @ExceptionHandler(CustomException.class)
-  private ResponseEntity<ErrorResponse> handleCustomException(CustomException ex){
+  private ResponseEntity<ErrorResponse> handleCustomException(CustomException customEx){
     ErrorResponse result = ErrorResponse.builder()
-        .status(ex.getErrorCode().getStatus().value())
-        .message(ex.getErrorCode().getMessage())
+        .status(customEx.getErrorCode().getStatus().value())
+        .message(customEx.getErrorCode().getMessage())
         .build();
     return ResponseEntity.ok(result);
   }

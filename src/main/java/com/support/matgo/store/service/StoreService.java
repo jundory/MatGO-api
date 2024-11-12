@@ -29,7 +29,21 @@ public class StoreService {
   public ListApiResponse mainFeedList(CoordinateRequest param) {
       // 거리 검색 api
       List<SimpleInfoResponse> storeList = storeMapper.mainFeedStoreList(param, RADIUS);
-      if(storeList == null || storeList.isEmpty()){
+//      if(storeList == null || storeList.isEmpty()){
+//        throw new CustomException(ErrorCode.STORE_NOT_FOUND);
+//      }
+      ListApiResponse result = ListApiResponse.builder()
+          .status(HttpStatus.OK.value())
+          .message(HttpStatus.OK.getReasonPhrase())
+          .result(storeList)
+          .build();
+      return result;
+  }
+
+  // 검색 피드 리스트
+  public ListApiResponse findFeedList(SearchTypeRequest param){
+      List<SimpleInfoResponse> storeList = storeMapper.findStoreList(param, RADIUS);
+      if(storeList == null){
         throw new CustomException(ErrorCode.STORE_NOT_FOUND);
       }
       ListApiResponse result = ListApiResponse.builder()
@@ -40,30 +54,8 @@ public class StoreService {
       return result;
   }
 
-  // 검색 피드 리스트
-  public ResponseEntity<ListApiResponse> findFeedList(SearchTypeRequest param){
-    try {
-      List<SimpleInfoResponse> storeList = storeMapper.findStoreList(param, RADIUS);
-      ListApiResponse result = ListApiResponse.builder()
-          .status(HttpStatus.OK.value())
-          .message(HttpStatus.OK.getReasonPhrase())
-          .result(storeList)
-          .build();
-//      return ResponseEntity.ok(result);
-      return ResponseEntity.ok(result);
-    }
-    catch(Exception e){
-        ListApiResponse result = ListApiResponse.builder()
-            .status(HttpStatus.INTERNAL_SERVER_ERROR.value())
-            .message(HttpStatus.INTERNAL_SERVER_ERROR.getReasonPhrase())
-            .build();
-    return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(result);
-    }
-  }
-
   // 가게 상세 정보
-  public ResponseEntity<?> getStoreInfo(String id){
-    try {
+  public DetailApiResponse getStoreInfo(String id){
       // 검색리스트 비즈니스 로직
       // 1. redis에 storeId 조회
 
@@ -87,15 +79,7 @@ public class StoreService {
           .detailData(responseData)
           .build();
       // 5. return
-      return ResponseEntity.ok(result);
-    }
-    catch (Exception e){
-      DetailApiResponse result = DetailApiResponse.builder()
-          .status(HttpStatus.OK.value())
-          .message(HttpStatus.OK.getReasonPhrase())
-          .build();
-      return ResponseEntity.ok(result);
-    }
+      return result;
   }
 }
 
