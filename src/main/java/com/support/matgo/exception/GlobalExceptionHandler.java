@@ -1,21 +1,38 @@
 package com.support.matgo.exception;
 
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 
+import static com.support.matgo.constants.ErrorCode.INVALID_PARAMETER;
+
 @RestControllerAdvice //  @ControllerAdvice + @ResponseBody
 public class GlobalExceptionHandler {
 
-  @ExceptionHandler(MethodArgumentNotValidException.class) // 유효성 검사에서 발생. 주로 데이터 유효하지 않을 때
-  public ResponseEntity<?> BaseException(MethodArgumentNotValidException e){
-    String errorMsg = e.getBindingResult().getAllErrors().get(0).getDefaultMessage();
+  // DTO Validation Argument Check
+  @ExceptionHandler(MethodArgumentNotValidException.class) // 요청 본문 파라미터 누락
+  private ResponseEntity<ErrorResponse> handleNoArgumentException(MethodArgumentNotValidException ex){
+  // private으로 exception 직접 호출 방지
     ErrorResponse result = ErrorResponse.builder()
-        .status(HttpStatus.BAD_REQUEST.value())
-        .message(errorMsg)
+        .status(INVALID_PARAMETER.getStatus().value())
+        .message(INVALID_PARAMETER.getMessage())
         .build();
-    return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(result);
+    return ResponseEntity.ok(result);
   }
+
+  // Custom Exception global handling
+  @ExceptionHandler(CustomException.class)
+  private ResponseEntity<ErrorResponse> handleCustomException(CustomException ex){
+    ErrorResponse result = ErrorResponse.builder()
+        .status(ex.getErrorCode().getStatus().value())
+        .message(ex.getErrorCode().getMessage())
+        .build();
+    return ResponseEntity.ok(result);
+  }
+// 500 에러
+//    ListApiResponse result = ListApiResponse.builder()
+//        .status(HttpStatus.INTERNAL_SERVER_ERROR.value())
+//        .message(HttpStatus.INTERNAL_SERVER_ERROR.getReasonPhrase())
+//        .build();
 }

@@ -1,5 +1,7 @@
 package com.support.matgo.store.service;
 
+import com.support.matgo.exception.CustomException;
+import com.support.matgo.constants.ErrorCode;
 import com.support.matgo.store.dto.request.CoordinateRequest;
 import com.support.matgo.store.dto.response.DetailApiResponse;
 import com.support.matgo.store.dto.response.DetailInfoResponse;
@@ -23,25 +25,19 @@ public class StoreService {
   private final DetailStoreRepository detailStoreRepository;
   final int RADIUS = 10000; //검색 거리 범위 제한 (m)
 
-  //메인 피드 리스트
-  public ResponseEntity<?> mainFeedList(CoordinateRequest param){
-    try {
+  // 메인 피드 리스트
+  public ListApiResponse mainFeedList(CoordinateRequest param) {
       // 거리 검색 api
       List<SimpleInfoResponse> storeList = storeMapper.mainFeedStoreList(param, RADIUS);
+      if(storeList == null || storeList.isEmpty()){
+        throw new CustomException(ErrorCode.STORE_NOT_FOUND);
+      }
       ListApiResponse result = ListApiResponse.builder()
           .status(HttpStatus.OK.value())
           .message(HttpStatus.OK.getReasonPhrase())
           .result(storeList)
           .build();
-      return ResponseEntity.ok(result);
-    }
-    catch (Exception e){
-      ListApiResponse result = ListApiResponse.builder()
-          .status(HttpStatus.INTERNAL_SERVER_ERROR.value())
-          .message(HttpStatus.INTERNAL_SERVER_ERROR.getReasonPhrase())
-          .build();
-      return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(result);
-    }
+      return result;
   }
 
   // 검색 피드 리스트
@@ -65,6 +61,7 @@ public class StoreService {
     }
   }
 
+  // 가게 상세 정보
   public ResponseEntity<?> getStoreInfo(String id){
     try {
       // 검색리스트 비즈니스 로직
