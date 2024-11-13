@@ -22,7 +22,7 @@ public class CommonController {
   private final CommonService commonService;
 
   @PostMapping("/getCodeType")
-  public ResponseEntity<?> commonCodeList(@RequestBody HashMap<String, String> type){
+  public ResponseEntity<List<CodeTypeResponse>> commonCodeList(@RequestBody HashMap<String, String> type){
     String codeType = type.get("commCdType");
     if(codeType == null){
       throw new CustomException(ErrorCode.INVALID_PARAMETER);

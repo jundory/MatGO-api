@@ -1,9 +1,10 @@
 package com.support.matgo.store.dto.response;
 
 import lombok.Data;
+import lombok.Getter;
 import org.apache.ibatis.type.Alias;
 
-@Data
+@Getter
 public class SimpleInfoResponse {
   private String imgUrl;
   private int storeId;
