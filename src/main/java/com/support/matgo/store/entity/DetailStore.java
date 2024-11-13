@@ -8,7 +8,7 @@ import org.springframework.data.mongodb.core.mapping.Field;
 
 @Document(collection = "metadata")
 @Getter
-@NoArgsConstructor  // NoSQL에서 entity 객체 인스턴스화할 때 기본 생성자 필요하기 때문
+//@NoArgsConstructor  // NoSQL에서 entity 객체 인스턴스화할 때 기본 생성자 필요하기 때문
 public class DetailStore {
   @Id
   private String id;
