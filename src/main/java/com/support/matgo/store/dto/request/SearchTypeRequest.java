@@ -7,9 +7,10 @@ import lombok.Data;
 import lombok.Getter;
 
 import java.math.BigDecimal;
+import java.util.List;
 
 @Getter
 public class SearchTypeRequest extends CoordinateRequest{
-  private String memberType;
-  private String foodType;
+  private List<String> member;
+  private List<String> food;
 }

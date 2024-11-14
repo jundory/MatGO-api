@@ -10,6 +10,8 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.HashMap;
+
 @RequiredArgsConstructor
 @RestController
 @RequestMapping("/api/store")
@@ -30,8 +32,9 @@ public class StoreController {
     return ResponseEntity.ok(result);
   }
 
-  @GetMapping("/getDetailInfo/{storeId}")  //POST으로?
-  public ResponseEntity<DetailApiResponse> detailStoreInfo(@PathVariable String storeId){
+  @PostMapping("/getDetailInfo")
+  public ResponseEntity<DetailApiResponse> detailStoreInfo(@RequestBody HashMap<String, String> param){
+    String storeId = param.get("storeId");
     DetailApiResponse result = storeService.getStoreInfo(storeId);
     return ResponseEntity.ok(result);
   }
