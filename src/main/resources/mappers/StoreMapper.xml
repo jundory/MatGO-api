@@ -2,6 +2,7 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.support.matgo.store.mapper.StoreMapper">
 
+<!--  메인 피드  -->
     <select id="mainFeedStoreList" parameterType="map" resultType="com.support.matgo.store.dto.response.SimpleInfoResponse">
         <!-- 하버사인 공식(지구의 곡률을 고려하여 위도와 경도로 두 점 사이 거리 계산) -->
         SELECT *,
@@ -15,31 +16,94 @@
         ORDER BY distance;
     </select>
 
+<!--  검색 피드  -->
+<!--    <select id="findStoreList" resultType="com.support.matgo.store.dto.response.SimpleInfoResponse">-->
+<!--        SELECT *,-->
+<!--        (6371 * acos(-->
+<!--        cos(radians(#{filter.latitude})) * cos(radians(latitude)) *-->
+<!--        cos(radians(longitude) - radians(#{filter.longitude})) +-->
+<!--        sin(radians(#{filter.latitude})) * sin(radians(latitude))-->
+<!--        )) AS distance-->
+<!--        FROM store_information-->
+<!--        WHERE-->
+<!--            <if test="filter.food == null and filter.member == null">- -->
+<!--                TRUE-->
+<!--            </if>-->
+<!--            <if test="filter.food == null or filter.member == null"> # null 우선 체크  ## size()에러 방지&ndash;&gt;-->
+<!--                <if test="filter.member == null">-->
+<!--                    <foreach collection="filter.food" item="food" separator=" OR ">-->
+<!--                        FIND_IN_SET(#{food}, category) > 0-->
+<!--                    </foreach>-->
+<!--                </if>-->
+<!--                <if test="filter.food == null">-->
+<!--                    <foreach collection="filter.member" item="mem" separator=" OR ">-->
+<!--                        FIND_IN_SET(#{mem}, category) > 0   # return boolean-->
+<!--                    </foreach>-->
+<!--                </if>-->
+<!--            </if>-->
+<!--            (<if test="filter.member != null and filter.member.size()>0">-->
+<!--                <foreach collection="filter.member" item="mem" separator=" OR ">-->
+<!--                    (FIND_IN_SET(#{mem}, category) > 0)-->
+<!--                </foreach>-->
+<!--            </if>-->
+<!--            OR #{filter.member} IS NULL)    # 일치하는게 없을 경우 null 처리-->
+<!--        AND #   하나라도 해당 안 되면 보여주면 안 되므로 AND-->
+<!--            (<if test="filter.food != null and filter.food.size()>0">-->
+<!--                <foreach collection="filter.food" item="food" separator=" OR ">-->
+<!--                    (FIND_IN_SET(#{food}, category) > 0)-->
+<!--                </foreach>-->
+<!--            </if>-->
+<!--            OR #{filter.food} IS NULL)  # 일치하는게 없을 경우 null 처리-->
+<!--        HAVING distance &lt; #{radius} / 1000-->
+<!--        ORDER BY distance;-->
+<!--    </select>-->
+
     <select id="findStoreList" resultType="com.support.matgo.store.dto.response.SimpleInfoResponse">
         SELECT *,
-               (6371 * acos(
-                       cos(radians(#{filter.latitude})) * cos(radians(latitude)) *
-                       cos(radians(longitude) - radians(#{filter.longitude})) +
-                       sin(radians(#{filter.latitude})) * sin(radians(latitude))
-                       )) AS distance
+        (6371 * acos(
+        cos(radians(#{filter.latitude})) * cos(radians(latitude)) *
+        cos(radians(longitude) - radians(#{filter.longitude})) +
+        sin(radians(#{filter.latitude})) * sin(radians(latitude))
+        )) AS distance
         FROM store_information
-        WHERE
-            (<if test="filter.member != null and filter.member.size()>0">
-                <foreach collection="filter.member" item="mem" separator=" OR ">
-                    (FIND_IN_SET(#{mem}, category) > 0)
-                </foreach>
-            </if>
-            OR #{filter.member} IS NULL)
-        AND
-            (<if test="filter.food != null and filter.food.size()>0">
-                <foreach collection="filter.food" item="food" separator=" OR ">
-                    (FIND_IN_SET(#{food}, category) > 0)
-                </foreach>
-            </if>
-            OR #{filter.food} IS NULL)
+        WHERE ## 조건1)type 모두 category에 존재. 조건2)type이 null은 아니나 category에 미존재. 조건3)둘 다 혹은 하나라도 null.
+            <choose>
+                <when test="filter.food == null and filter.member == null">
+                    TRUE
+                </when>
+                <when test="filter.food == null or filter.member == null"> # null 우선 체크  ## size()에러 방지
+                    <if test="filter.member == null">
+                        <foreach collection="filter.food" item="food" separator=" OR ">
+                            FIND_IN_SET(#{food}, category) > 0
+                        </foreach>
+                    </if>
+                    <if test="filter.food == null">
+                        <foreach collection="filter.member" item="mem" separator=" OR ">
+                            FIND_IN_SET(#{mem}, category) > 0   # return boolean
+                        </foreach>
+                    </if>
+                </when>
+                <when test="filter.food.size()>0 and filter.member.size()>0"> # 둘 다 리스트값 존재할 경우
+                    (<if test="filter.member != null and filter.member.size()>0">
+                        <foreach collection="filter.member" item="mem" separator=" OR ">
+                            FIND_IN_SET(#{mem}, category) > 0 # return boolean
+                        </foreach>
+                    </if>
+                    OR #{filter.member} IS NULL)
+                AND <!-- 두 타입 중 하나라도 일치하는게 없으면 안 되므로 AND -->
+                    (<if test="filter.food != null and filter.food.size()>0">
+                        <foreach collection="filter.food" item="food" separator=" OR ">
+                            FIND_IN_SET(#{food}, category) > 0 OR #{food} IS NULL
+                        </foreach>
+                    </if>
+                    OR #{filter.food} IS NULL)
+                </when>
+            </choose>
         HAVING distance &lt; #{radius} / 1000
         ORDER BY distance;
     </select>
+
+    <!--  간단정보  -->
     <select id="findSimpleStoreInfo" resultType="com.support.matgo.store.dto.response.SimpleInfoResponse">
         SELECT *
         FROM store_information
