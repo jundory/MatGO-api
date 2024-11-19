@@ -68,10 +68,10 @@
         FROM store_information
         WHERE ## 조건1)둘 다 null. 조건2) 둘 중 하나만 null. 조건3)둘 다 null은 아니지만 category에 둘 중 하나 혹은 둘 다 카테고리에 미존재.
         <choose>
-                <when test="filter.food == null and filter.member == null"> # 두 타입 모두 null
+                <when test="filter.food == null and filter.member == null"> # 조건1  ## null 우선 체크 -> size()에러 방지
                     TRUE
                 </when>
-                <when test="filter.food == null or filter.member == null"> # null 우선 체크  ## size()에러 방지
+                <when test="filter.food == null or filter.member == null"> # 조건2
                     <if test="filter.member == null">
                         <foreach collection="filter.food" item="food" separator=" OR ">
                             FIND_IN_SET(#{food}, category) > 0
@@ -84,14 +84,14 @@
                     </if>
                 </when>
                 <when test="filter.food.size()>0 and filter.member.size()>0"> # 둘 다 리스트값 존재할 경우
-                    (<if test="filter.member != null and filter.member.size()>0">
+                    (<if test="filter.member != null">
                         <foreach collection="filter.member" item="mem" separator=" OR ">
                             FIND_IN_SET(#{mem}, category) > 0 # return boolean
                         </foreach>
                     </if>
                     OR #{filter.member} IS NULL)  # 일치하는게 없을 경우 null 처리
                 AND <!-- 두 타입 중 하나라도 일치하는게 없으면 안 되므로 AND -->
-                    (<if test="filter.food != null and filter.food.size()>0">
+                    (<if test="filter.food != null">
                         <foreach collection="filter.food" item="food" separator=" OR ">
                             FIND_IN_SET(#{food}, category) > 0 OR #{food} IS NULL
                         </foreach>
