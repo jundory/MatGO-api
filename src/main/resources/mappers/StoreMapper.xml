@@ -3,7 +3,7 @@
 <mapper namespace="com.support.matgo.store.mapper.StoreMapper">
 
 <!--  메인 피드  -->
-    <select id="mainFeedStoreList" parameterType="map" resultType="com.support.matgo.store.dto.response.SimpleInfoResponse">
+    <select id="mainFeedStoreList" parameterType="map" resultType="com.support.matgo.store.dto.response.StoreSimpleInfoResponse">
         <!-- 하버사인 공식(지구의 곡률을 고려하여 위도와 경도로 두 점 사이 거리 계산) -->
         SELECT *,
         (6371 * acos(
@@ -17,7 +17,7 @@
     </select>
 
 <!--  검색 피드  -->
-<!--    <select id="findStoreList" resultType="com.support.matgo.store.dto.response.SimpleInfoResponse">-->
+<!--    <select id="findStoreList" resultType="com.support.matgo.store.dto.response.StoreSimpleInfoResponse">-->
 <!--        SELECT *,-->
 <!--        (6371 * acos(-->
 <!--        cos(radians(#{filter.latitude})) * cos(radians(latitude)) *-->
@@ -58,7 +58,7 @@
 <!--        ORDER BY distance;-->
 <!--    </select>-->
 
-    <select id="findStoreList" resultType="com.support.matgo.store.dto.response.SimpleInfoResponse">
+    <select id="findStoreList" resultType="com.support.matgo.store.dto.response.StoreSimpleInfoResponse">
         SELECT *,
         (6371 * acos(
         cos(radians(#{filter.latitude})) * cos(radians(latitude)) *
@@ -104,7 +104,7 @@
     </select>
 
     <!--  간단정보  -->
-    <select id="findSimpleStoreInfo" resultType="com.support.matgo.store.dto.response.SimpleInfoResponse">
+    <select id="findSimpleStoreInfo" resultType="com.support.matgo.store.dto.response.StoreSimpleInfoResponse">
         SELECT *
         FROM store_information
         WHERE store_id = #{storeId}

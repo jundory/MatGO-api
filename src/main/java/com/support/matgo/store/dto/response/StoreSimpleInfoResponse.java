@@ -1,11 +1,9 @@
 package com.support.matgo.store.dto.response;
 
-import lombok.Data;
 import lombok.Getter;
-import org.apache.ibatis.type.Alias;
 
 @Getter
-public class SimpleInfoResponse {
+public class StoreSimpleInfoResponse {
   private String imgUrl;
   private int storeId;
   private String storeNm;

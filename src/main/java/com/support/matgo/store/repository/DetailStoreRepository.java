@@ -8,5 +8,5 @@ import java.util.List;
 
 @Repository
 public interface DetailStoreRepository extends MongoRepository<DetailStore, String> {
-  List<DetailStore> findDetailInfoByStoreId(String storeId);
+  List<DetailStore> findDetailInfoByStoreId(String storeId);  // 계산 로직 없는 단순 GET이라 클래스 생성X
 }

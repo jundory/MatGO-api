@@ -4,9 +4,9 @@ import com.support.matgo.exception.CustomException;
 import com.support.matgo.constants.ErrorCode;
 import com.support.matgo.store.dto.request.CoordinateRequest;
 import com.support.matgo.store.dto.response.DetailApiResponse;
-import com.support.matgo.store.dto.response.DetailInfoResponse;
+import com.support.matgo.store.dto.response.StoreDetailInfoResponse;
 import com.support.matgo.store.dto.response.ListApiResponse;
-import com.support.matgo.store.dto.response.SimpleInfoResponse;
+import com.support.matgo.store.dto.response.StoreSimpleInfoResponse;
 import com.support.matgo.store.dto.request.SearchTypeRequest;
 import com.support.matgo.store.entity.DetailStore;
 import com.support.matgo.store.mapper.StoreMapper;
@@ -14,7 +14,6 @@ import com.support.matgo.store.repository.DetailStoreRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
-import org.springframework.http.ResponseEntity;
 
 import java.util.List;
 
@@ -28,7 +27,7 @@ public class StoreService {
   // 메인 피드 리스트
   public ListApiResponse mainFeedList(CoordinateRequest param) {
       // 거리 검색 api
-      List<SimpleInfoResponse> storeList = storeMapper.mainFeedStoreList(param, RADIUS);
+      List<StoreSimpleInfoResponse> storeList = storeMapper.mainFeedStoreList(param, RADIUS);
 //      if(storeList == null || storeList.isEmpty()){
 //        throw new CustomException(ErrorCode.STORE_NOT_FOUND);
 //      }
@@ -42,7 +41,7 @@ public class StoreService {
 
   // 검색 피드 리스트
   public ListApiResponse findFeedList(SearchTypeRequest param){
-      List<SimpleInfoResponse> storeList = storeMapper.findStoreList(param, RADIUS);
+      List<StoreSimpleInfoResponse> storeList = storeMapper.findStoreList(param, RADIUS);
       if(storeList == null){
         throw new CustomException(ErrorCode.STORE_NOT_FOUND);
       }
@@ -66,8 +65,8 @@ public class StoreService {
           .map(DetailStore::getImgUrl)  //메서드 참조 람다식 "(x) -> DetailStore.getImgUrl(x)" 와 동일
           .toList();
       // 3. RDB 간단 정보 조회
-      SimpleInfoResponse simpleStoreData = storeMapper.findSimpleStoreInfo(storeId);
-      DetailInfoResponse responseData = DetailInfoResponse.builder()
+      StoreSimpleInfoResponse simpleStoreData = storeMapper.findSimpleStoreInfo(storeId);
+      StoreDetailInfoResponse responseData = StoreDetailInfoResponse.builder()
           .simpleInfo(simpleStoreData)
           .imgList(imgList)
           .build();
@@ -76,7 +75,7 @@ public class StoreService {
       DetailApiResponse result = DetailApiResponse.builder()
           .status(HttpStatus.OK.value())
           .message(HttpStatus.OK.getReasonPhrase())
-          .detailData(responseData)
+          .result(responseData)
           .build();
       // 5. return
       return result;

@@ -9,7 +9,7 @@ import org.springframework.http.HttpStatus;
 public enum ErrorCode {
 
   //400 BAD_REQUEST 잘못된 요청
-  INVALID_PARAMETER(HttpStatus.BAD_REQUEST, "파라미터 값을 확인해주세요."), // ENUM 상수에 값 지정
+  INVALID_PARAMETER(HttpStatus.BAD_REQUEST, "파라미터 값을 확인해주세요."), // ENUM 상수에 값 지정(생성자 필수)
   //404 NOT_FOUND 잘못된 리소스 접근
   STORE_NOT_FOUND(HttpStatus.NOT_FOUND, "존재하지 않는 가게 ID 입니다."),
   //409 CONFLICT 중복된 리소스

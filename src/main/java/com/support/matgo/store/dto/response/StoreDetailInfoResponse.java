@@ -7,7 +7,7 @@ import java.util.List;
 
 @Getter
 @Builder
-public class DetailInfoResponse {
-  private SimpleInfoResponse simpleInfo;
-  List<String> imgList;
+public class StoreDetailInfoResponse {
+  private StoreSimpleInfoResponse simpleInfo;
+  private List<String> imgList;
 }
