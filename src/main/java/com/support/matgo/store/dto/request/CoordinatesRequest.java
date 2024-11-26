@@ -1,14 +1,12 @@
 package com.support.matgo.store.dto.request;
 
 import jakarta.validation.constraints.NotNull;
-import lombok.Data;
 import lombok.Getter;
-import lombok.NoArgsConstructor;
 
 import java.math.BigDecimal;
 
 @Getter
-public class CoordinateRequest {
+public class CoordinatesRequest {
   @NotNull
   private BigDecimal latitude;
   @NotNull

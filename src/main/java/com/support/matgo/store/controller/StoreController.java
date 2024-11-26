@@ -1,6 +1,6 @@
 package com.support.matgo.store.controller;
 
-import com.support.matgo.store.dto.request.CoordinateRequest;
+import com.support.matgo.store.dto.request.CoordinatesRequest;
 import com.support.matgo.store.dto.request.SearchTypeRequest;
 import com.support.matgo.store.dto.response.DetailApiResponse;
 import com.support.matgo.store.dto.response.ListApiResponse;
@@ -20,9 +20,9 @@ public class StoreController {
 
   // 리스트 api 합칠 예정 type null로 받아와 분기 처리
   @PostMapping("/getFeedList")
-  public ResponseEntity<ListApiResponse> mainFeedList(@Valid @RequestBody CoordinateRequest param){
+  public ResponseEntity<ListApiResponse> mainFeedList(@Valid @RequestBody CoordinatesRequest location){
     // try catch는 공통에러핸들러에서 서비스단의 throw 받아서
-      ListApiResponse result = storeService.mainFeedList(param);
+      ListApiResponse result = storeService.mainFeedList(location);
     return ResponseEntity.ok(result);
   }
 

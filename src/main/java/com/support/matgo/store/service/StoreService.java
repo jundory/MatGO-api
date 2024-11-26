@@ -2,7 +2,7 @@ package com.support.matgo.store.service;
 
 import com.support.matgo.exception.CustomException;
 import com.support.matgo.constants.ErrorCode;
-import com.support.matgo.store.dto.request.CoordinateRequest;
+import com.support.matgo.store.dto.request.CoordinatesRequest;
 import com.support.matgo.store.dto.response.DetailApiResponse;
 import com.support.matgo.store.dto.response.StoreDetailInfoResponse;
 import com.support.matgo.store.dto.response.ListApiResponse;
@@ -18,7 +18,6 @@ import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
-import java.util.Optional;
 
 @RequiredArgsConstructor
 @Service
@@ -29,12 +28,13 @@ public class StoreService {
   final int RADIUS = 10000; //검색 거리 범위 제한 (m)
 
   // 메인 피드 리스트
-  public ListApiResponse mainFeedList(CoordinateRequest param) {
+  public ListApiResponse mainFeedList(CoordinatesRequest location) {
       // 거리 검색 api
-      List<StoreInfoResponse> storeList = storeMapper.mainFeedStoreList(param, RADIUS);
+//      List<StoreInfoResponse> storeList = storeMapper.mainStoreList(location, RADIUS);
 //      if(storeList == null || storeList.isEmpty()){
 //        throw new CustomException(ErrorCode.STORE_NOT_FOUND);
 //      }
+      List<StoreInfo> storeList = storeRepository.findStoreByCoords(location, RADIUS);
       ListApiResponse result = ListApiResponse.builder()
           .status(HttpStatus.OK.value())
           .message(HttpStatus.OK.getReasonPhrase())
@@ -52,7 +52,7 @@ public class StoreService {
       ListApiResponse result = ListApiResponse.builder()
           .status(HttpStatus.OK.value())
           .message(HttpStatus.OK.getReasonPhrase())
-          .result(storeList)
+//          .result(storeList)
           .build();
       return result;
   }

@@ -30,4 +30,6 @@ public class StoreInfo {
   private String imgUrl;
   @Field("naver_url")
   private String naverUrl;
+  @Field("simple_review")
+  private String simpleReview;
 }
