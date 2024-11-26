@@ -10,5 +10,5 @@ import java.util.List;
 public class ListApiResponse {
   private int status;
   private String message;
-  private List<StoreSimpleInfoResponse> result;
+  private List<StoreInfoResponse> result;
 }
