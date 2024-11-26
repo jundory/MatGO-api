@@ -21,6 +21,11 @@ public class CommonController {
 
   private final CommonService commonService;
 
+  /**
+   * 공통 코드 조회
+   * @param type 필요한 공통 코드의 타입 member/time
+   * @return result 타입에 맞는 공통 코드 정보
+   */
   @PostMapping("/getCodeType")
   public ResponseEntity<List<CodeTypeResponse>> commonCodeList(@RequestBody HashMap<String, String> type){
     String codeType = type.get("commCdType");

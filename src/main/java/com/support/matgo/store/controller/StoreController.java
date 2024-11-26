@@ -12,13 +12,21 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.HashMap;
 
+
+/**
+ * 가게 관련 Controller
+ */
 @RequiredArgsConstructor
 @RestController
 @RequestMapping("/api/store")
 public class StoreController {
   private final StoreService storeService;
 
-  // 리스트 api 합칠 예정 type null로 받아와 분기 처리
+  /**
+   * 메인 화면 리스트
+   * @param location 사용자의 현재 경도&위도
+   * @return result 사용자 주변 가게 리스트
+   */
   @PostMapping("/getFeedList")
   public ResponseEntity<ListApiResponse> mainFeedList(@Valid @RequestBody CoordinatesRequest location){
     // try catch는 공통에러핸들러에서 서비스단의 throw 받아서
@@ -26,16 +34,25 @@ public class StoreController {
     return ResponseEntity.ok(result);
   }
 
+  /**
+   * 검색 화면 리스트
+   * @param param 사용자가 설정한 필터값, 현재 경도&위도
+   * @return result 필터에 맞는 사용자 주변 가게 리스트
+   */
   @PostMapping("/getSearchList")
   public ResponseEntity<ListApiResponse> searchStoreList(@Valid @RequestBody SearchTypeRequest param) {
     ListApiResponse result = storeService.findFeedList(param);
     return ResponseEntity.ok(result);
   }
 
+  /**
+   * 상세 화면 정보 및 이미지
+   * @param storeId 가게 고유 ID
+   * @return result 가게 상세 정보와 음식 이미지 리스트
+   */
   @PostMapping("/getDetailInfo")
-  public ResponseEntity<DetailApiResponse> detailStoreInfo(@RequestBody HashMap<String, String> param){
-    String storeId = param.get("storeId");
-    DetailApiResponse result = storeService.getStoreInfo(storeId);
+  public ResponseEntity<DetailApiResponse> detailStoreInfo(@RequestBody HashMap<String, String> storeId){
+    DetailApiResponse result = storeService.getStoreInfo(storeId.get("storeId"));
     return ResponseEntity.ok(result);
   }
 }

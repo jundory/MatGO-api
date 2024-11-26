@@ -1,7 +1,5 @@
 package com.support.matgo.store.repository;
 
-//import com.mongodb.client.model.geojson.Point;
-import com.mongodb.client.model.geojson.Position;
 import com.support.matgo.store.dto.request.CoordinatesRequest;
 import com.support.matgo.store.entity.StoreInfo;
 import lombok.RequiredArgsConstructor;
@@ -18,6 +16,8 @@ import java.util.List;
 public class CustomRepositoryImpl implements CustomRepository {
 
   private final MongoTemplate mongoTemplate;
+
+  /* 지리적 인덱스를 기반으로 한 거리 계산 메소드 */
   @Override
   public List<StoreInfo> findStoreByCoords(CoordinatesRequest location, int radius){
     // BigDecimal을 double로 변환
@@ -25,9 +25,9 @@ public class CustomRepositoryImpl implements CustomRepository {
     double latitude = location.getLatitude().doubleValue();
 
     // GeoJSON Point 생성
-    // Point point = new Point(new Position(longitude, latitude)); // MongoDB의 nearSphere()는 MongoDB -GeoJSON 포맷 요구
-    Point point = new Point(longitude, latitude); // Spring Data의 Criteria는 다양한 지리적 타입을 지원
+    Point point = new Point(longitude, latitude);
 
+    // 쿼리 생성
     Query query = new Query();
     query.addCriteria(Criteria.where("location")  //Criteria : MongoDB 쿼리를 구성하는 데 사용되는 조건을 정의
         .nearSphere(point)  //nearSphere : 지리적 쿼리에서 특정 위치를 기준으로 거리 계산을 하는 데 사용

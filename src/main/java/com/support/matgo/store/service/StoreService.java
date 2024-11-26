@@ -27,14 +27,13 @@ public class StoreService {
   private final StoreRepository storeRepository;
   final int RADIUS = 10000; //검색 거리 범위 제한 (m)
 
-  // 메인 피드 리스트
+  /* 메인 화면 조회 메소드 */
   public ListApiResponse mainFeedList(CoordinatesRequest location) {
-      // 거리 검색 api
-//      List<StoreInfoResponse> storeList = storeMapper.mainStoreList(location, RADIUS);
-//      if(storeList == null || storeList.isEmpty()){
-//        throw new CustomException(ErrorCode.STORE_NOT_FOUND);
-//      }
+      // List<StoreInfoResponse> storeList = storeMapper.mainStoreList(location, RADIUS); <--MyBatis
       List<StoreInfo> storeList = storeRepository.findStoreByCoords(location, RADIUS);
+      if(storeList == null || storeList.isEmpty()){
+        throw new CustomException(ErrorCode.STORE_NOT_FOUND);
+      }
       ListApiResponse result = ListApiResponse.builder()
           .status(HttpStatus.OK.value())
           .message(HttpStatus.OK.getReasonPhrase())
@@ -43,7 +42,7 @@ public class StoreService {
       return result;
   }
 
-  // 검색 피드 리스트
+  /* 검색 화면 조회 메소드 */
   public ListApiResponse findFeedList(SearchTypeRequest param){
       List<StoreInfoResponse> storeList = storeMapper.findStoreList(param, RADIUS);
       if(storeList == null){
@@ -57,7 +56,7 @@ public class StoreService {
       return result;
   }
 
-  // 가게 상세 정보
+  /* 가게 상세 정보 조회 메소드 */
   public DetailApiResponse getStoreInfo(String storeId){
       // 검색리스트 비즈니스 로직
       // 1. redis에 storeId 조회

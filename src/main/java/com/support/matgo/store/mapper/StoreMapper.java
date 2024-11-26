@@ -10,7 +10,7 @@ import java.util.List;
 
 @Mapper
 public interface StoreMapper {
-  List<StoreInfoResponse> mainStoreList(@Param("coord") CoordinatesRequest coordination, @Param("radius") int radius);
+//  List<StoreInfoResponse> mainStoreList(@Param("coord") CoordinatesRequest coordination, @Param("radius") int radius);
   List<StoreInfoResponse> findStoreList(@Param("filter") SearchTypeRequest param, @Param("radius") int radius);
-  StoreInfoResponse findSimpleStoreInfo(int storeId);
+//  StoreInfoResponse findSimpleStoreInfo(int storeId);
 }
