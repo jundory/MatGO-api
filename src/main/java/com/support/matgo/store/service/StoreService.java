@@ -44,21 +44,21 @@ public class StoreService {
 
   /* 검색 화면 조회 메소드 */
   public ListApiResponse findFeedList(SearchTypeRequest param){
-      List<StoreInfoResponse> storeList = storeMapper.findStoreList(param, RADIUS);
+      // List<StoreInfoResponse> storeList = storeMapper.findStoreList(param, RADIUS); <--MyBatis
+        List<StoreInfo> storeList = storeRepository.findStoreByCategory(param, RADIUS);
       if(storeList == null){
         throw new CustomException(ErrorCode.STORE_NOT_FOUND);
       }
       ListApiResponse result = ListApiResponse.builder()
           .status(HttpStatus.OK.value())
           .message(HttpStatus.OK.getReasonPhrase())
-//          .result(storeList)
+          .result(storeList)
           .build();
       return result;
   }
 
   /* 가게 상세 정보 조회 메소드 */
   public DetailApiResponse getStoreInfo(String storeId){
-      // 검색리스트 비즈니스 로직
       // 1. redis에 storeId 조회
 
       // 2. img 메타 데이터 조회 & imgUrl만 별도 리스트로 생성

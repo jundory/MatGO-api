@@ -6,7 +6,6 @@ import lombok.Setter;
 import java.util.List;
 
 @Getter
-@Setter
 public class SearchTypeRequest extends CoordinatesRequest {
   private List<String> member;
   private List<String> food;

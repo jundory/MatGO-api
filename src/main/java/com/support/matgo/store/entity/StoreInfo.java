@@ -5,6 +5,8 @@ import lombok.Getter;
 import org.springframework.data.mongodb.core.mapping.Document;
 import org.springframework.data.mongodb.core.mapping.Field;
 
+import java.util.List;
+
 @Document(collection = "store_information")
 @Getter
 public class StoreInfo {
@@ -25,7 +27,7 @@ public class StoreInfo {
     @Field("location")
   private Object location;
   @Field("category")
-  private String category;
+  private List<String> category;
   @Field("img_url")
   private String imgUrl;
   @Field("naver_url")

@@ -1,6 +1,7 @@
 package com.support.matgo.store.repository;
 
 import com.support.matgo.store.dto.request.CoordinatesRequest;
+import com.support.matgo.store.dto.request.SearchTypeRequest;
 import com.support.matgo.store.entity.StoreInfo;
 
 import java.util.List;
@@ -10,4 +11,5 @@ import java.util.List;
  */
 public interface CustomRepository {
   List<StoreInfo> findStoreByCoords(CoordinatesRequest location, int radius);
+  List<StoreInfo> findStoreByCategory(SearchTypeRequest type, int radius);
 }

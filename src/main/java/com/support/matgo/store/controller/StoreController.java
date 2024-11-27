@@ -10,6 +10,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.text.DecimalFormat;
 import java.util.HashMap;
 
 
@@ -29,19 +30,18 @@ public class StoreController {
    */
   @PostMapping("/getFeedList")
   public ResponseEntity<ListApiResponse> mainFeedList(@Valid @RequestBody CoordinatesRequest location){
-    // try catch는 공통에러핸들러에서 서비스단의 throw 받아서
       ListApiResponse result = storeService.mainFeedList(location);
     return ResponseEntity.ok(result);
   }
 
   /**
    * 검색 화면 리스트
-   * @param param 사용자가 설정한 필터값, 현재 경도&위도
+   * @param type 사용자가 설정한 필터값, 현재 경도&위도
    * @return result 필터에 맞는 사용자 주변 가게 리스트
    */
   @PostMapping("/getSearchList")
-  public ResponseEntity<ListApiResponse> searchStoreList(@Valid @RequestBody SearchTypeRequest param) {
-    ListApiResponse result = storeService.findFeedList(param);
+  public ResponseEntity<ListApiResponse> searchStoreList(@Valid @RequestBody SearchTypeRequest type) {
+    ListApiResponse result = storeService.findFeedList(type);
     return ResponseEntity.ok(result);
   }
 
