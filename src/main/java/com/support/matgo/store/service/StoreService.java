@@ -71,24 +71,21 @@ public class StoreService {
 
   /* 가게 상세 정보 조회 메소드 */
   public DetailApiResponse getStoreInfo(String storeId){
-      // 1. redis에 storeId 조회
-
-      // 2. img 메타 데이터 조회 & imgUrl만 별도 리스트로 생성
+      // 1. img 메타 데이터 조회 & imgUrl만 별도 리스트로 생성
       List<ImageInfo> imageInfoList = imageRepository.findByStoreId(storeId);
 
       // entity to DTO
       List<String> imgList = imageInfoList.stream() //람다와 병렬처리 방식을 통해 리스트, 컬렉션을 함수형으로 쉽게 처리
           .map(ImageInfo::getImgUrl)  //메서드 참조 람다식 "(x) -> DetailStore.getImgUrl(x)"
           .toList();
-      // 3. 가게 상세 정보 조회
+
+      // 2. 가게 상세 정보 조회
       StoreInfo storeDetailInfo = storeRepository.findByStoreId(storeId);
       StoreDetailInfoResponse storeData = StoreDetailInfoResponse.builder()
           .storeInfo(new StoreInfoResponse(storeDetailInfo))  //entity to dto
           .imgList(imgList)
           .build();
-      // 4. redis에 저장
 
-      // 5. return
       DetailApiResponse result = DetailApiResponse.builder()
           .status(HttpStatus.OK.value())
           .message(HttpStatus.OK.getReasonPhrase())
