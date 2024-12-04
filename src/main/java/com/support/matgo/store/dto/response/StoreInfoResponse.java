@@ -16,6 +16,7 @@ public class StoreInfoResponse {
   private String imgUrl;
   private String naverUrl;
   private String simpleReview;
+  private int famousCnt;
 
 
   // Entity to DTO 위한 생성자
@@ -30,6 +31,7 @@ public class StoreInfoResponse {
     this.openInfo = storeInfo.getOpenInfo();
     this.imgUrl = storeInfo.getImgUrl();
     this.naverUrl = storeInfo.getNaverUrl();
-    this.simpleReview =storeInfo.getSimpleReview();
+    this.simpleReview = storeInfo.getSimpleReview();
+    this.famousCnt = storeInfo.getFamousCnt();
   }
 }

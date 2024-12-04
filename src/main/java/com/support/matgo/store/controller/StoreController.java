@@ -25,7 +25,7 @@ public class StoreController {
 
   /**
    * 메인 화면 리스트
-   * @param location 사용자의 현재 경도&위도
+   * @param location 사용자의 현재 경도&위도, 나열 순서
    * @return result 사용자 주변 가게 리스트
    */
   @PostMapping("/getFeedList")

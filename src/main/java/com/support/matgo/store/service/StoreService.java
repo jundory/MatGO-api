@@ -17,6 +17,8 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 
+import java.util.Comparator;
+import java.util.HashMap;
 import java.util.List;
 
 @RequiredArgsConstructor
@@ -29,13 +31,13 @@ public class StoreService {
 
   /* 메인 화면 조회 메소드 */
   public ListApiResponse mainFeedList(CoordinatesRequest location) {
+
+      String sortType = location.getSortType();
       // List<StoreInfoResponse> storeList = storeMapper.mainStoreList(location, RADIUS); <--MyBatis
       List<StoreInfo> storeEntityList = storeRepository.findStoreByCoords(location, RADIUS);
 
-      // Entity to DTO
-      List<StoreInfoResponse> storeList = storeEntityList.stream()
-          .map(store -> new StoreInfoResponse(store))
-          .toList();
+      // Sorting & Entity to DTO
+      List<StoreInfoResponse> storeList = sortStoreList(storeEntityList, sortType);
 
       if(storeList == null || storeList.isEmpty()){
         throw new CustomException(ErrorCode.STORE_NOT_FOUND);
@@ -52,12 +54,10 @@ public class StoreService {
   /* 검색 화면 조회 메소드 */
   public ListApiResponse findFeedList(SearchTypeRequest param){
       // List<StoreInfoResponse> storeList = storeMapper.findStoreList(param, RADIUS); <--MyBatis
-        List<StoreInfo> storeEntityList = storeRepository.findStoreByCategory(param, RADIUS);
-
+      List<StoreInfo> storeEntityList = storeRepository.findStoreByCategory(param, RADIUS);
+      String sortType = param.getSortType();
       // entity to DTO
-      List<StoreInfoResponse> storeList = storeEntityList.stream()
-          .map(store -> new StoreInfoResponse(store))
-          .toList();
+      List<StoreInfoResponse> storeList = sortStoreList(storeEntityList, sortType);
 
       if(storeList == null){
         throw new CustomException(ErrorCode.STORE_NOT_FOUND);
@@ -67,7 +67,7 @@ public class StoreService {
           .message(HttpStatus.OK.getReasonPhrase())
           .result(storeList)
           .build();
-      return result;
+    return result;
   }
 
   /* 가게 상세 정보 조회 메소드 */
@@ -96,6 +96,20 @@ public class StoreService {
           .result(storeData)
           .build();
       return result;
+  }
+
+  /* Sorting & Entity to DTO */
+  public List<StoreInfoResponse> sortStoreList(List<StoreInfo> entityList, String type){
+    Comparator<StoreInfoResponse> comparator;
+    if(type.equals("review")){
+      comparator = Comparator.comparingInt(StoreInfoResponse::getReviewCnt).reversed(); //내림차순
+    } else {
+      comparator = Comparator.comparingInt(StoreInfoResponse::getFamousCnt).reversed();
+    }
+    return entityList.stream()
+        .map(store -> new StoreInfoResponse(store))
+        .sorted(comparator)
+        .toList();
   }
 }
 

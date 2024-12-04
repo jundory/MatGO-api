@@ -16,4 +16,6 @@ public class CoordinatesRequest {
   private double latitude;
   @NotNull
   private double longitude;
+
+  private String sortType;
 }

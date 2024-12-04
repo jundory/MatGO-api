@@ -34,4 +34,6 @@ public class StoreInfo {
   private String naverUrl;
   @Field("simple_review")
   private String simpleReview;
+  @Field("famous_cnt")
+  private int famousCnt;
 }
