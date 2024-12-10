@@ -98,7 +98,7 @@ public class StoreService {
   public List<StoreInfoResponse> sortStoreList(List<StoreInfo> entityList, String type){
     Comparator<StoreInfoResponse> comparator;
     if(type.equals("review")){
-      comparator = Comparator.comparingInt(StoreInfoResponse::getReviewCnt).reversed(); //내림차순
+      comparator = Comparator.comparingInt(StoreInfoResponse::getReviewCnt).reversed(); // reversed = 내림차순
     } else {
       comparator = Comparator.comparingInt(StoreInfoResponse::getFamousCnt).reversed();
     }
@@ -108,4 +108,3 @@ public class StoreService {
         .toList();
   }
 }
-

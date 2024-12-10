@@ -72,7 +72,8 @@ public class CustomRepositoryImpl implements CustomRepository {
       /**
        * where() : 단일 조건 첫 정의, 조건의 시작점
        * and() : 추가 조건 결합, 양 조건 모두 충족
-       * 아래의 경우 동일한 "category" 필드 내 조건이므로 andOperator() 사용  *** or()의 경우 orOperator()
+       * 아래의 경우 동일한 "category" 필드 내 조건이므로, andOperator()로 두 개의 where 쿼리 사용
+       * or()의 경우 orOperator()
        */
       criteria.andOperator(
           Criteria.where("category").in(type.getMember()),
