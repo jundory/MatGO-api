@@ -30,7 +30,7 @@ public class StoreService {
 
   /* 메인 화면 조회 메소드 */
   public ListApiResponse mainFeedList(CoordinatesRequest location) {
-
+    try {
       String sortType = location.getSortType();
       // List<StoreInfoResponse> storeList = storeMapper.mainStoreList(location, RADIUS); <--MyBatis
       List<StoreInfo> storeEntityList = storeRepository.findStoreByCoords(location, RADIUS);
@@ -38,9 +38,27 @@ public class StoreService {
       // Sorting & Entity to DTO
       List<StoreInfoResponse> storeList = sortStoreList(storeEntityList, sortType);
 
-      if(storeList == null || storeList.isEmpty()){
-        throw new CustomException(ErrorCode.STORE_NOT_FOUND);
-      }
+      ListApiResponse result = ListApiResponse.builder()
+          .status(HttpStatus.OK.value())
+          .message(HttpStatus.OK.getReasonPhrase())
+          .result(storeList)
+          .build();
+      return result;
+    } catch (CustomException e){
+      throw e;
+    } catch (Exception e){
+      throw new CustomException(ErrorCode.INTERNAL_SERVER_ERROR);
+    }
+  }
+
+  /* 검색 화면 조회 메소드 */
+  public ListApiResponse findFeedList(SearchTypeRequest param){
+    try {
+      // List<StoreInfoResponse> storeList = storeMapper.findStoreList(param, RADIUS); <--MyBatis
+      List<StoreInfo> storeEntityList = storeRepository.findStoreByCategory(param, RADIUS);
+      String sortType = param.getSortType();
+      // entity to DTO
+      List<StoreInfoResponse> storeList = sortStoreList(storeEntityList, sortType);
 
       ListApiResponse result = ListApiResponse.builder()
           .status(HttpStatus.OK.value())
@@ -48,25 +66,11 @@ public class StoreService {
           .result(storeList)
           .build();
       return result;
-  }
-
-  /* 검색 화면 조회 메소드 */
-  public ListApiResponse findFeedList(SearchTypeRequest param){
-      // List<StoreInfoResponse> storeList = storeMapper.findStoreList(param, RADIUS); <--MyBatis
-      List<StoreInfo> storeEntityList = storeRepository.findStoreByCategory(param, RADIUS);
-      String sortType = param.getSortType();
-      // entity to DTO
-      List<StoreInfoResponse> storeList = sortStoreList(storeEntityList, sortType);
-
-      if(storeList == null){
-        throw new CustomException(ErrorCode.STORE_NOT_FOUND);
-      }
-      ListApiResponse result = ListApiResponse.builder()
-          .status(HttpStatus.OK.value())
-          .message(HttpStatus.OK.getReasonPhrase())
-          .result(storeList)
-          .build();
-    return result;
+    } catch (CustomException e){
+      throw e;
+    } catch (Exception e){
+      throw new CustomException(ErrorCode.INTERNAL_SERVER_ERROR);
+    }
   }
 
   /* 가게 상세 정보 조회 메소드 */
@@ -81,6 +85,9 @@ public class StoreService {
 
       // 2. 가게 상세 정보 조회
       StoreInfo storeDetailInfo = storeRepository.findByStoreId(storeId);
+      if (storeDetailInfo == null) {
+        throw new CustomException(ErrorCode.STORE_NOT_FOUND);
+      }
       StoreDetailInfoResponse storeData = StoreDetailInfoResponse.builder()
           .storeInfo(new StoreInfoResponse(storeDetailInfo))  //entity to dto
           .imgList(imgList)
@@ -96,15 +103,19 @@ public class StoreService {
 
   /* Sorting & Entity to DTO */
   public List<StoreInfoResponse> sortStoreList(List<StoreInfo> entityList, String type){
-    Comparator<StoreInfoResponse> comparator;
-    if(type.equals("review")){
-      comparator = Comparator.comparingInt(StoreInfoResponse::getReviewCnt).reversed(); // reversed = 내림차순
+    // null 체크
+    if(entityList == null || entityList.isEmpty()){
+      throw new CustomException(ErrorCode.STORE_NOT_FOUND);
     } else {
-      comparator = Comparator.comparingInt(StoreInfoResponse::getFamousCnt).reversed();
-    }
+      // 정렬 기준 정의
+      Comparator<StoreInfoResponse> comparator = type.equals("review")
+          ? Comparator.comparingInt(StoreInfoResponse::getReviewCnt).reversed()  //reversed = 내림차순
+          : Comparator.comparingInt(StoreInfoResponse::getFamousCnt).reversed();
+
     return entityList.stream()
         .map(store -> new StoreInfoResponse(store))
         .sorted(comparator)
         .toList();
+    }
   }
 }
