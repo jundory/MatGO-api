@@ -5,6 +5,7 @@ import lombok.Getter;
 
 import java.util.List;
 @Builder
+@Getter
 public class StoreDetailInfoResponse {
   private StoreInfoResponse storeInfo;
   private List<String> imgList;
