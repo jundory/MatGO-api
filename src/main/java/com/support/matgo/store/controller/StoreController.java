@@ -46,15 +46,16 @@ public class StoreController {
 
   /**
    * 상세 화면 정보 및 이미지
-   * @param storeId 가게 고유 ID
+   * @param id 가게 고유 STORE_ID
    * @return result 가게 상세 정보와 음식 이미지 리스트
    */
   @PostMapping("/getDetailInfo")
-  public ResponseEntity<DetailApiResponse> detailStoreInfo(@RequestBody HashMap<String, String> storeId){
+  public ResponseEntity<DetailApiResponse> detailStoreInfo(@RequestBody HashMap<String, String> id){
+    String storeId = id.get("storeId");
     if(storeId == null){
       throw new IllegalArgumentException();
     }
-    DetailApiResponse result = storeService.getStoreInfo(storeId.get("storeId"));
+    DetailApiResponse result = storeService.getStoreInfo(storeId);
     return ResponseEntity.ok(result);
   }
 }
