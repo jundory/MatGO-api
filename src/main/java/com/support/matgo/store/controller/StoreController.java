@@ -51,6 +51,9 @@ public class StoreController {
    */
   @PostMapping("/getDetailInfo")
   public ResponseEntity<DetailApiResponse> detailStoreInfo(@RequestBody HashMap<String, String> storeId){
+    if(storeId == null){
+      throw new IllegalArgumentException();
+    }
     DetailApiResponse result = storeService.getStoreInfo(storeId.get("storeId"));
     return ResponseEntity.ok(result);
   }

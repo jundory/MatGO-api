@@ -1,5 +1,6 @@
 package com.support.matgo.store.dto.request;
 
+import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import lombok.Getter;
 
@@ -16,6 +17,6 @@ public class CoordinatesRequest {
   private double latitude;
   @NotNull
   private double longitude;
-
+  @NotBlank
   private String sortType;
 }

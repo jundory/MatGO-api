@@ -21,6 +21,17 @@ public class GlobalExceptionHandler {
     return ResponseEntity.ok(result);
   }
 
+  // request parameter Check
+  @ExceptionHandler(IllegalArgumentException.class) // 잘못된 인수 전달
+  private ResponseEntity<ErrorResponse> handleIllegalArgumentException(IllegalArgumentException ex){
+    // private으로 exception 직접 호출 방지
+    ErrorResponse result = ErrorResponse.builder()
+        .status(INVALID_PARAMETER.getStatus().value())
+        .message(INVALID_PARAMETER.getMessage())
+        .build();
+    return ResponseEntity.ok(result);
+  }
+
   // Custom Exception global handling
   @ExceptionHandler(CustomException.class)
   private ResponseEntity<ErrorResponse> handleCustomException(CustomException customEx){

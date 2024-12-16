@@ -29,9 +29,6 @@ public class CommonController {
   @PostMapping("/getCodeType")
   public ResponseEntity<List<CodeTypeResponse>> commonCodeList(@RequestBody HashMap<String, String> type){
     String codeType = type.get("commCdType");
-    if(codeType == null){
-      throw new CustomException(ErrorCode.INVALID_PARAMETER);
-    }
     List<CodeTypeResponse> result = commonService.findCodeTypeList(codeType);
     return ResponseEntity.ok(result);
   }
