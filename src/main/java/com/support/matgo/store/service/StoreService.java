@@ -86,6 +86,9 @@ public class StoreService {
 
       // 2. 가게 상세 정보 조회
       StoreInfo storeDetailInfo = storeRepository.findByStoreId(storeId);
+      /**
+       * 중복 store 정보에 대한 예외처리 필요. 현재 db에 중복으로 쌓여있는 구조 <- 추후 변경이 있을거지만 방어로직은 존재해야 할듯.
+       */
       // null 체크
       if (storeDetailInfo == null) {
         throw new CustomException(ErrorCode.DETAIL_NO_CONTENT);
