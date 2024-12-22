@@ -32,7 +32,7 @@ dependencies {
 
     implementation 'org.mybatis.spring.boot:mybatis-spring-boot-starter:3.0.3' // MyBatis 의존성 추가
     implementation 'com.mysql:mysql-connector-j' // MySQL 의존성 추가
-    implementation 'org.springframework.boot:spring-boot-starter-data-redis' // redis 의존성 추가
+    //implementation 'org.springframework.boot:spring-boot-starter-data-redis' // redis 의존성 추가
     implementation 'org.springframework.boot:spring-boot-starter-data-mongodb' // MongoDB 의존성 추가
 
     implementation 'org.springframework.boot:spring-boot-starter-validation' // validation 추가
