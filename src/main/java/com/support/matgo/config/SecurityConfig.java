@@ -18,6 +18,7 @@ public class SecurityConfig {
         .authorizeRequests(authorize -> authorize
                 .requestMatchers("/**").permitAll() // 요청 허용할 경로 명시(현재는 모든 경로)
 //                        .anyRequest().authenticated() // 밑의 permitAll()과 반대로 인증할 경로 명시(인증된 사용자만 접근 허용)
+                //commit test
         );
     return http.build();
   }
